@@ -44,11 +44,14 @@ max_inteprolated_days <- function(df) {
   
 }
 
-## Process 
+## Process the data
 dat <- dat %>% 
   mutate(data =  map(data, keep_valid_range)) %>% 
   mutate(max_day = map(data, max_inteprolated_days)) %>% 
-  unnest(max_day)
+  mutate(n_observation = map(data, nrow)) %>% 
+  unnest(max_day, n_observation)
+
+# Visualize ---------------------------------------------------------------
 
 dat %>%
   ggplot(aes(x = max_day)) +
@@ -57,4 +60,15 @@ dat %>%
        subtitle = "For year 2015 (binwidth = 1)") +
   scale_x_continuous(breaks = round(seq(0, 360, by = 20)))
 
-ggsave("graphs/max_number_of_interpolated_days.pdf")
+ggsave("graphs/histo_max_number_of_interpolated_days.pdf")
+
+dat %>% 
+  mutate(n = map(data, nrow)) %>% 
+  unnest(n) %>% 
+  ggplot(aes(x = n)) +
+  geom_histogram(binwidth = 1) +
+  labs(title = paste0(stringr::str_wrap("Number of documented days (including interpolated PP)", 70), "\n"),
+       subtitle = "For year 2015 (binwidth = 1)") +
+  scale_x_continuous(breaks = round(seq(0, 360, by = 20)))
+
+ggsave("graphs/histo_number_pp_for each_pixel.pdf")
