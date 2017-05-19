@@ -11,3 +11,15 @@ graphics.off()
 ## Set default ggplot2 font size and font family
 loadfonts(quiet = TRUE)
 theme_set(theme_bw(base_size = 12, base_family = "Open Sans"))
+
+
+# Prepare data ------------------------------------------------------------
+
+## Save CSV files to feather format, much faster
+
+source("R/csv_to_feather.R") ## Takes ~4-5 minutes
+
+# graphics ----------------------------------------------------------------
+
+files <- list.files("graphs/", "pdf", full.names = TRUE)
+map(files, embed_fonts)
