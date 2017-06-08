@@ -3,6 +3,11 @@
 library(tidyverse)
 library(extrafont)
 library(feather)
+library(sp)
+library(rgdal)
+library(fuzzyjoin)
+library(ncdf4)
+library(SearchTrees)
 
 ## Clear the workspace
 rm(list = ls())
@@ -16,8 +21,8 @@ theme_set(theme_bw(base_size = 12, base_family = "Open Sans"))
 # Prepare data ------------------------------------------------------------
 
 ## Save CSV files to feather format, much faster
-
 source("R/csv_to_feather.R") ## Takes ~4-5 minutes
+source("R/process_primary_production.R") ## Takes ~10 minutes
 
 # graphics ----------------------------------------------------------------
 
